@@ -13,9 +13,11 @@
 # limitations under the License
 
 from abc import abstractmethod
+from typing import List
 
 from tensortrade.core.component import Component
 from tensortrade.core.base import TimeIndexed
+from tensortrade.oms.orders.order import Order
 
 
 class RewardScheme(Component, TimeIndexed):
@@ -24,7 +26,7 @@ class RewardScheme(Component, TimeIndexed):
     registered_name = "rewards"
 
     @abstractmethod
-    def reward(self, env: 'TradingEnv') -> float:
+    def reward(self, env: 'TradingEnv', orders: List[Order]) -> float:
         """Computes the reward for the current step of an episode.
 
         Parameters

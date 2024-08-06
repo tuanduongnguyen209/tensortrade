@@ -13,13 +13,14 @@
 # limitations under the License
 
 from abc import abstractmethod, ABCMeta
-from typing import Any
+from typing import Any, List
 
 from gymnasium.spaces import Space
 
 
 from tensortrade.core.component import Component
 from tensortrade.core.base import TimeIndexed
+from tensortrade.oms.orders.order import Order
 
 
 class ActionScheme(Component, TimeIndexed, metaclass=ABCMeta):
@@ -37,7 +38,7 @@ class ActionScheme(Component, TimeIndexed, metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def perform(self, env: 'TradingEnv', action: Any) -> None:
+    def perform(self, env: 'TradingEnv', action: Any) -> List[Order]:
         """Performs an action on the environment.
 
         Parameters
