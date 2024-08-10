@@ -1,6 +1,5 @@
 
 from abc import abstractmethod
-from typing import List
 
 import numpy as np
 import pandas as pd
@@ -9,18 +8,16 @@ from tensortrade.env.generic import RewardScheme, TradingEnv
 from tensortrade.feed.core import Stream, DataFeed
 import math
 
-from tensortrade.oms.orders.order import Order
-
 
 class TensorTradeRewardScheme(RewardScheme):
     """An abstract base class for reward schemes for the default environment.
     """
 
-    def reward(self, env: 'TradingEnv', orders: List[Order]) -> float:
-        return self.get_reward(env.action_scheme.portfolio, orders)
+    def reward(self, env: 'TradingEnv') -> float:
+        return self.get_reward(env.action_scheme.portfolio)
 
     @abstractmethod
-    def get_reward(self, portfolio, orders: List[Order]) -> float:
+    def get_reward(self, portfolio) -> float:
         """Gets the reward associated with current step of the episode.
 
         Parameters
@@ -172,13 +169,6 @@ class RiskAdjustedReturns(TensorTradeRewardScheme):
         returns = pd.Series(net_worths).pct_change().dropna()
         risk_adjusted_return = self._return_algorithm(returns)
         return risk_adjusted_return
-    
-class FutureWindowProfit(TensorTradeRewardScheme):
-        def __init__(self, window_size: int = 1):
-            self._window_size = self.default('window_size', window_size)
-
-        def get_reward(self, portfolio: 'Portfolio', orders: List[Order]) -> float:
-            raise NotImplementedError
 
 
 class PBR(TensorTradeRewardScheme):

@@ -124,10 +124,10 @@ class TradingEnv(gymnasium.Env, TimeIndexed):
         dict
             The information gathered after completing the step.
         """
-        orders = self.action_scheme.perform(self, action)
+        self.action_scheme.perform(self, action)
 
         obs = self.observer.observe(self)
-        reward = self.reward_scheme.reward(self, orders)
+        reward = self.reward_scheme.reward(self)
         terminated = self.stopper.stop(self)
         truncated = False
         info = self.informer.info(self)
